@@ -1,8 +1,9 @@
 #########################
 # compiler and common flags
 #########################
-CXX:= g++
-PROJECT:= algotdd
+CXX := g++
+COMMON_FLAGS := -std=c++0x
+PROJECT := algotdd
 WARNINGS := -Wall -Wextra
 # pretty print makefile - you can disable it.
 Q := @
