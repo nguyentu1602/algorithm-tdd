@@ -16,5 +16,4 @@ The algorithms and data structures I choose to implement are all well-known and 
 
 Whenever possible, I will also write-up my attempts of profiling and empirically analyzing complexities of these algorithms & data structures.
 
-
-https://travis-ci.org/nguyentu1602/algorithm-tdd.svg?branch=master
+[![Build Status](https://travis-ci.org/nguyentu1602/algorithm-tdd.svg?branch=master)](https://travis-ci.org/nguyentu1602/algorithm-tdd)
