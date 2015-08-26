@@ -8,6 +8,11 @@ WARNINGS := -Wall -Wextra
 # pretty print makefile - you can disable it.
 Q := @
 
+#########################
+# Other program used
+#########################
+VALGRIND := /usr/bin/valgrind
+VALGRIND_FLAGS := --leak-check=yes
 
 #########################
 # directory listing
@@ -94,6 +99,9 @@ test: $(TEST_ALL_BIN) $(TEST_BINS)
 
 runtest: $(TEST_ALL_BIN)
 	$(TEST_ALL_BIN) --gtest_shuffle $(TEST_FILTER)
+
+memtest: $(TEST_ALL_BIN) $(TEST_BINS)
+	$(VALGRIND) $(VALGRIND_FLAGS) $(TEST_ALL_BIN)
 
 clean:
 	rm -rf build
