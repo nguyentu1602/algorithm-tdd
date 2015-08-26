@@ -19,6 +19,11 @@ class Queue {
   // default Ctor
   Queue() : size_{0}, head_{nullptr}, tail_{nullptr} {}
 
+  // defalt Dtor
+  ~Queue() {
+    clear();
+  }
+
   // the public interface:
   size_t size() const {
     return size_;
@@ -38,7 +43,23 @@ class Queue {
       tail_ = new_node;
     }
     size_++;
- }
+  }
+
+  void clear() {
+    if (!empty()) {
+      Node* to_del = head_;
+      Node* next = nullptr;
+      // keep deleting
+      do {
+        next = to_del->next_;
+        delete to_del;
+        to_del = next;
+      } while(to_del);
+      // update private members
+      size_ = 0;
+      head_ = tail_ = nullptr;
+    }
+  }
 
  private:
   // A queue should contains a pointer to the first node,
@@ -58,8 +79,6 @@ class Queue {
   size_t size_;
   Node* head_;
   Node* tail_;
-
-
 };
 
 
