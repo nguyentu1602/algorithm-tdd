@@ -15,3 +15,6 @@ I have consulted several books and resources before starting this project and wa
 The algorithms and data structures I choose to implement are all well-known and thus this repo is solely for my learning purpose. All credits on explaining how these algorithms work and best practices in implementing them belong to the authors above and all coding errors are mine. Occationaly, I will use examples of complex algorithms implemented by others and only try to write testsuites for them. Under such cases I will adequately cite the source(s) and credit the original author(s).
 
 Whenever possible, I will also write-up my attempts of profiling and empirically analyzing complexities of these algorithms & data structures.
+
+
+https://travis-ci.org/nguyentu1602/algorithm-tdd.svg?branch=master
