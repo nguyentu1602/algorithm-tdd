@@ -146,6 +146,8 @@ $(TEST_BINS): $(TEST_BIN_DIR)/%.testbin: $(TEST_BUILD_DIR)/%.o \
 	$(Q) $(CXX) $(TEST_MAIN_SRC) $< $(GTEST_OBJ) -o $@ \
 		$(LFLAGS) $(LDFLAGS) -l$(PROJECT) -Wl,-rpath,$(ORIGIN)/../lib
 
+# TODO: use valgrind to test for memory leak and save it as xml file
+# valgrind --leak-check=yes --xml=yes --xml-file="gaga" ./build/test/test_all.testbin
 
 # for automatic dependency generation:
 # it will include all the .d files that generate by the -MMD flag of gcc
