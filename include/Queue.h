@@ -44,6 +44,23 @@ class Queue {
     }
     size_++;
   }
+  // dequeue return a pointer to deal with empty case
+  Element* dequeue() {
+    if (!head_) {
+      return nullptr;
+    }
+    else {
+      Node* prev_head = head_;
+      Element* ret_item = new Element(prev_head->element_);
+      head_ = head_->next_;
+      delete prev_head;
+      size_--;
+      if (empty()) {
+        tail_ = nullptr;
+      }
+      return ret_item;
+    }
+  }
 
   void clear() {
     if (!empty()) {
