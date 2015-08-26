@@ -36,9 +36,28 @@ TEST_F(QueueTest, DefaultConstructor) {
   EXPECT_EQ(0u, q0_.size());
 }
 
-TEST_F(QueueTest, Enqueue){
+TEST_F(QueueTest, enqueue){
   EXPECT_EQ(2u, q1_.size());
   EXPECT_EQ(2u, q2_.size());
   q2_.enqueue(100);
   EXPECT_EQ(3u, q2_.size());
+}
+
+TEST_F(QueueTest, clear) {
+  q2_.clear();
+  EXPECT_TRUE(q2_.empty());
+}
+
+TEST_F(QueueTest, dequeue) {
+  int* pop_item = q1_.dequeue();
+  EXPECT_EQ(*pop_item, 1);
+  EXPECT_EQ(q1_.size(), 1);
+  delete pop_item;
+  pop_item = q1_.dequeue();
+  EXPECT_EQ(*pop_item, 2);
+  EXPECT_TRUE(q1_.empty());
+  // q1_ should be empty now. check it:
+  delete pop_item;
+  pop_item = q1_.dequeue();
+  EXPECT_EQ(nullptr, pop_item);
 }
