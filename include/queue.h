@@ -2,8 +2,6 @@
 #define QUEUE_H_
 #include <cstddef> // for nullptr
 #include <utility> // for std::move
-#include <iostream>
-using namespace std;
 
 /* The queue data structure - follows stl interface
  * Public interface:
