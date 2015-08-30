@@ -56,7 +56,7 @@ class list;
 template <typename E>
 class listNode {
   friend class list<E>;
- private:
+ public:
   E element_;
   listNode* prev_;
   listNode* next_;
@@ -66,12 +66,40 @@ class listNode {
   // move ctor
   listNode(E&& e, listNode* p = nullptr, listNode* n = nullptr)
       : element_{std::move(e)}, prev_{p}, next_{n} {}
-
 };
 
 template <typename E>
 class list {
-  // NOT YET IMPLEMENTED
+ public:
+  // the big five:
+  // 0. default ctor
+  list() {
+    init();
+  }
+  // 1. destructor
+  ~list() { // pop everything then delete the two sentinels
+    clear();
+    delete head_;
+    delete tail_;
+  }
+  // 2. copy ctor
+  // 3. assignment operator
+  // 4. move ctor
+  // 5. move assignment operator
+
+  // capacity methods
+  bool empty() const {
+    return size_ == 0;
+  }
+
+  size_t size() const {
+    return size_;
+  }
+
+  void clear() {
+    // NOT YET IMPLEMENTED
+  }
+
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
   // we can make to sentinel nodes for head_ and tail_ to simplify implementation
