@@ -72,6 +72,21 @@ class listNode {
 template <typename E>
 class list {
   // NOT YET IMPLEMENTED
+ private:
+  // each list will have a size_ counter and two pointers to the beginning and end
+  // we can make to sentinel nodes for head_ and tail_ to simplify implementation
+  size_t size_;
+  listNode<E>* head_;
+  listNode<E>* tail_;
+
+  // make the two sentinels nodes with init()
+  void init() {
+    size_ = 0;
+    head_ = new listNode<E>();
+    tail_ = new listNode<E>();
+    head_->next_ = tail_;
+    tail_->prev_ = head_;
+  }
 };
 
 #endif //LIST_H_
