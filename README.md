@@ -12,6 +12,8 @@ I have consulted several books and resources before starting this project and wa
   - The C++ STL source code
   - Google Gtest framework documentation and source code
 
-The algorithms and data structures I choose to implement are all well-known and thus this repo is solely for my learning purpose. All credits on explaining how these algorithms work and best practices in implementing them belong to the authors above and all coding errors are mine. Occationaly, I will use examples of complex algorithms implemented by others and only try to write testsuites for them. Under such cases I will adequately cite the source(s) and credit the original author(s).
+The algorithms and data structures I choose to implement are all well-known and thus this repo is solely for my learning purpose. Because I use the C++ Standard Template Library regularly at work, I naturally incline to use its containters' interface when implementing my containers. All credits on explaining how the algorithms and data structures work and best practices in implementing them belong to the authors above and all coding errors are mine. Occationaly, I will use examples of complex algorithms implemented by others and only try to write testsuites for them. Under such cases I will adequately cite the source(s) and credit the original author(s).
 
 Whenever possible, I will also write-up my attempts of profiling and empirically analyzing complexities of these algorithms & data structures.
+
+[![Build Status](https://travis-ci.org/nguyentu1602/algorithm-tdd.svg?branch=master)](https://travis-ci.org/nguyentu1602/algorithm-tdd)
