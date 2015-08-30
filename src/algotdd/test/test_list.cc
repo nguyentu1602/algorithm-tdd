@@ -14,6 +14,10 @@ class listTest : public testing::Test {
   list<std::string> list_str;
 };
 
+// test the helper class listNodeTest
+// this is a canonical example of writing testable code:
+// to test private members, just write another helper class
+// and make its data public
 TEST(listNodeTest, DefaultCtor) {
   int element_1 = 100;
   std::string element_2("Hello world");
