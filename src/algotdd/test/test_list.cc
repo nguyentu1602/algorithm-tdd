@@ -14,11 +14,37 @@ class listTest : public testing::Test {
   ::list<std::string> list_str;
 };
 
+class listIteratorTest : public testing::Test {
+  // try to make friend with list_const_iterator DOES NOT WORK here
+  // because friendship must be made before template is resolved:
+  // friend class list_const_iterator<int>;
+ protected:
+  virtual void SetUp() {
+    head_ = new listNode<int> (0);
+    head_->next_ = new listNode<int> (10);
+    tail_ = head_->next_->next_ = new listNode<int> (20);
+    head_->next_->prev_ = head_;
+    tail_->prev_ = head_->next_;
+    c_iter = list_const_iterator<int> (head_);
+    c_iter_1 = list_const_iterator<int> (head_->next_);
+  }
+
+  virtual void TearDown() {
+    delete tail_;
+    delete head_->next_;
+    delete head_;
+  }
+  listNode<int>* head_;
+  listNode<int>* tail_;
+  list_const_iterator<int> c_iter;
+  list_const_iterator<int> c_iter_1;
+};
+
 // test the helper class listNodeTest
 // this is a canonical example of writing testable code:
 // to test private members, just write another helper class
 // and make its data public
-TEST(listNodeTest, DefaultCtor) {
+TEST(listHelperTest, ListNode) {
   int element_1 = 100;
   std::string element_2("Hello world");
   listNode<int> node_1(element_1);
@@ -33,6 +59,23 @@ TEST(listNodeTest, DefaultCtor) {
   EXPECT_EQ(100, node_3.element_);
   EXPECT_EQ("Hello world", node_4.element_);
   EXPECT_TRUE(element_2.empty());
+}
+
+TEST_F(listIteratorTest, Iterators) {
+  list_const_iterator<int> c_iter_temp = c_iter;
+  // testing increment and decrement
+  EXPECT_EQ(++c_iter_temp, c_iter_1);
+  EXPECT_EQ(--c_iter_temp, c_iter);
+  EXPECT_EQ(c_iter_temp++, c_iter);
+  EXPECT_EQ(c_iter_temp, c_iter_1);
+  EXPECT_EQ(c_iter_temp--, c_iter_1);
+  EXPECT_EQ(c_iter_temp, c_iter);
+
+  // testing accessor
+  EXPECT_EQ(0, *c_iter_temp);
+  EXPECT_EQ(10, *(++c_iter_temp));
+  EXPECT_EQ(20, *(++c_iter_temp));
+  EXPECT_EQ(10, *(--c_iter_temp));
 }
 
 TEST_F(listTest, DefaultCtor) {
