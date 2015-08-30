@@ -51,7 +51,6 @@
 template <typename E>
 class list;
 
-
 // double linked list have nodes that contain pointers to previous and next nodes
 template <typename E>
 class listNode {
@@ -69,8 +68,72 @@ class listNode {
 };
 
 template <typename E>
+class list_const_iterator {
+  friend class list<E>;
+  // this is a hack to allow listIteratorTest to access the parametrized ctor:
+  friend class listIteratorTest;
+  // this class stores a pointers to a listNode object
+  // and provide basic iterator operations: =, ==, ++, and !=
+ public:
+  list_const_iterator() : current_ {nullptr} {}
+  // operators
+  const E& operator*() const {
+    return retrieve();
+  }
+
+  // prefix form ++itr increments first, return the object later
+  virtual list_const_iterator& operator++() {
+    // this signature is for the prefix form ++itr
+    current_ = current_->next_; // change the state of the const_iterator obj
+    return *this; // return reference to the current object
+  }
+
+  // postfix form itr++ return the current value first, increment later
+  virtual list_const_iterator operator++(int) {
+    // this signature is for the postfix form of itr++
+    list_const_iterator old_ = *this; // return
+    ++(*this);
+    return old_;
+  }
+
+  virtual list_const_iterator& operator--() {
+    current_ = current_->prev_;
+    return *this;
+  }
+
+  virtual list_const_iterator operator--(int) {
+    list_const_iterator old_ = *this;
+    --(*this);
+    return old_;
+  }
+
+  bool operator==(const list_const_iterator & rhs) const {
+    return current_ == rhs.current_;
+  }
+
+  bool operator!=(const list_const_iterator & rhs) const {
+    return !(*this == rhs); // compare the references of the two iterator objects
+  }
+ protected:
+  // why protected: because we want the derived class iterator to
+  // have access to these data and methods
+  listNode<E>* current_;
+  // retrieve() must return E&, not just the node
+  E& retrieve() const {
+    return current_->element_;
+  }
+  // protected parametrized-ctor for const_iterator
+  // why: because we want the ctor available to the list class only
+  list_const_iterator(listNode<E>* p) : current_{p} {}
+};
+
+
+template <typename E>
 class list {
  public:
+  // the iterator type - make them testable!
+  typedef list_const_iterator<E> const_iterator;
+
   // the big five:
   // 0. default ctor
   list() {
