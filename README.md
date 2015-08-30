@@ -2,7 +2,7 @@
 Implement classical algorithms and data structures under test-driven development.
 
 In this repo I will develop basic algorithms and data structures in C++ while strictly adhering to a test-driven workflow.
-I will use Google Gtest framework and Travis CI for automatic compiling and testing.
+I will use Google Gtest framework and Travis CI for automatic compiling and testing. Valgrind is also used for memory leak detection; however, because Valgrind slows tests down by ~20x, I do not include it in Travis CI. Nonetheless, I make running it as seamless as possible by wrapping it under just one command "make memtest".
 
 I have consulted several books and resources before starting this project and want to sufficiently credit them here:
   - CLRS's Introduction to Algorithms
