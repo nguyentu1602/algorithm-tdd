@@ -9,9 +9,9 @@ class listTest : public testing::Test {
   }
   virtual void TearDown() {}
   // setup fixtures
-  list<int> list_1;
-  list<int> list_2;
-  list<std::string> list_str;
+  ::list<int> list_1;
+  ::list<int> list_2;
+  ::list<std::string> list_str;
 };
 
 // test the helper class listNodeTest
