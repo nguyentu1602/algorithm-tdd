@@ -51,9 +51,22 @@
 template <typename E>
 class list;
 
+
+// double linked list have nodes that contain pointers to previous and next nodes
 template <typename E>
 class listNode {
   friend class list<E>;
+ private:
+  E element_;
+  listNode* prev_;
+  listNode* next_;
+  // ctor
+  listNode(const E& e = E{}, listNode* p = nullptr, listNode* n = nullptr)
+      : element_{e}, prev_{p}, next_{n} {}
+  // move ctor
+  listNode(E&& e, listNode* p = nullptr, listNode* n = nullptr)
+      : element_{std::move(e)}, prev_{p}, next_{n} {}
+
 };
 
 template <typename E>
