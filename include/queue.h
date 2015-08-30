@@ -1,6 +1,9 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
-#include <cstddef>
+#include <cstddef> // for nullptr
+#include <utility> // for std::move
+#include <iostream>
+using namespace std;
 
 /* The queue data structure - follows stl interface
  * Public interface:
@@ -39,6 +42,7 @@ class queueNode {
   queueNode* next_;
 
   explicit queueNode(const Element& element) : element_{element}, next_{nullptr} {}
+  explicit queueNode(Element&& element) : element_{std::move(element)}, next_{nullptr} {}
   // disable the default copy ctor and assignment operator:
   const queueNode& operator=(const queueNode&);
   queueNode(const queueNode&);
@@ -64,10 +68,17 @@ class queue {
   };
 
   // modifiers methods:
-  // push takes an element and makes a copy to put inside the Queue
-  // TODO: move version of push
+  // normal push takes an element and makes a copy to put inside the queue
+  // move push takes a rvalue and move it into the queue
   void push(const Element& element) {
-    queueNode<Element>* new_node = new queueNode<Element>(element);
+    Element copied_element = element;
+    // employ move push to comply to DRY
+    push(std::move(copied_element));
+  };
+
+  void push (Element&& element) {
+    queueNode<Element>* new_node =
+        new queueNode<Element>(std::move(element));
     if (empty()) {
       head_ = tail_ = new_node;
     }
@@ -76,7 +87,8 @@ class queue {
       tail_ = new_node;
     }
     size_++;
-  };
+  }
+
   // pop returns nothing because we have accessors to do that
   void pop() {
     if(!empty()) {
