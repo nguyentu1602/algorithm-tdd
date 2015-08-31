@@ -129,6 +129,11 @@ TEST_F(listTest, DefaultCtor) {
   EXPECT_TRUE(list_empty.empty());
 }
 
+TEST_F(listTest, CopyCtor) {
+
+}
+
+
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
   // decrement pass begin() and increment pass end() should be ok
@@ -188,7 +193,6 @@ TEST_F(listTest, InsertConstObject) {
   EXPECT_EQ(const_str, CONST_STR);
 }
 
-
 TEST_F(listTest, EraseAtIter) {
   int_iter = list_1.erase(list_1.begin()); // erase 10
   EXPECT_EQ(list_1.size(), 2);
@@ -205,14 +209,14 @@ TEST_F(listTest, EraseAtIter) {
 TEST_F(listTest, PushFront) {
   // lvalue version
   size_t old_size = list_1.size();
-  list_1.push_front(10);
+  list_1.push_front(100);
   EXPECT_EQ(++old_size, list_1.size());
-  EXPECT_EQ(*list_1.begin(), 10);
+  EXPECT_EQ(*list_1.begin(), 100);
 
-  list_1.push_front(20);
+  list_1.push_front(200);
   EXPECT_EQ(++old_size, list_1.size());
-  EXPECT_EQ(*list_1.begin(), 20);
-  EXPECT_EQ(*(++list_1.begin()), 10);
+  EXPECT_EQ(*list_1.begin(), 200);
+  EXPECT_EQ(*(++list_1.begin()), 100);
   EXPECT_TRUE(--(++list_1.begin()) == list_1.begin());
 
   // rvalue version
@@ -226,14 +230,14 @@ TEST_F(listTest, PushFront) {
 TEST_F(listTest, PushBack) {
   // lvalue version
   size_t old_size = list_1.size();
-  list_1.push_back(10);
+  list_1.push_back(1000);
   EXPECT_EQ(++old_size, list_1.size());
-  EXPECT_EQ(*(--list_1.end()), 10);
+  EXPECT_EQ(*(--list_1.end()), 1000);
 
-  list_1.push_back(20);
+  list_1.push_back(2000);
   EXPECT_EQ(++old_size, list_1.size());
-  EXPECT_EQ(*(--list_1.end()), 20);
-  EXPECT_EQ(*(--(--list_1.end())), 10);
+  EXPECT_EQ(*(--list_1.end()), 2000);
+  EXPECT_EQ(*(--(--list_1.end())), 1000);
   EXPECT_TRUE(++(--list_1.end()) == list_1.end());
 
   // rvalue version
@@ -243,7 +247,3 @@ TEST_F(listTest, PushBack) {
   EXPECT_EQ(*(--list_str.end()), "a string");
   EXPECT_TRUE(str.empty());
 }
-
-// TEST_F(listTest, FrontBack) {
-
-// }
