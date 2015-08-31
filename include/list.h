@@ -212,12 +212,10 @@ class list {
   // modifiers
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
+  // insert by lvalue calls insert by rvalue to conform to DRY
   iterator insert(iterator iter, const E& element) {
-    listNode<E>* ptr = iter.current_;
-    ptr->prev_->next_ = new listNode<E> (element, ptr->prev_, ptr);
-    ptr->prev_ = ptr->prev_->next_;
-    size_++;
-    return iterator(ptr->prev_);
+    E copied(element);
+    return insert(iter, std::move(copied));
   }
 
   // insert rvalue using move semantic
