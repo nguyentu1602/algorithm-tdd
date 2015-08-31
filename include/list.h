@@ -210,6 +210,16 @@ class list {
   }
 
   // modifiers
+  // push_front, push_back, pop_front, pop_back
+  // these are basic double-ended queue operations
+  void push_front(const E& element) {
+    insert(begin(), element);
+  }
+
+  void push_front(E&& element) {
+    insert(begin(), std::move(element));
+  }
+
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
   // insert by lvalue calls insert by rvalue to conform to DRY
