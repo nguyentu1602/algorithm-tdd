@@ -5,14 +5,18 @@
 class listTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    // NOT YET IMPLEMENTED
+    list_1.insert(list_1.begin(), 10);
+    int_iter = list_1.insert(list_1.end(), 30);
+    int_iter = list_1.insert(int_iter, 20);
   }
   virtual void TearDown() {}
   // setup fixtures
   ::list<int> list_1;
   ::list<int> list_2;
   list<int> list_empty;
+
   ::list<std::string> list_str;
+  list<int>::iterator int_iter;
 };
 
 class listIteratorTest : public testing::Test {
@@ -122,6 +126,9 @@ TEST_F(listTest, DefaultCtor) {
 
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
+  // decrement pass begin() and increment pass end() should be ok
+  EXPECT_NO_FATAL_FAILURE(--list_empty.begin());
+  EXPECT_NO_FATAL_FAILURE(++list_empty.end());
 }
 
 TEST_F(listTest, InsertLvalue) {
@@ -141,4 +148,21 @@ TEST_F(listTest, InsertLvalue) {
   EXPECT_EQ(*ret_iter, 20);
   EXPECT_EQ(*(++ret_iter), 10);
   EXPECT_TRUE(++ret_iter == list_empty.end());
+  // insert pass begin() and pass end() should fail
+  // the following would not even compile:
+  // list_empty.insert(++list_empty.end(), 100);
+  // list_empty.insert(--list_empty.begin(), 100);
+}
+
+TEST_F(listTest, EraseAtIter) {
+  int_iter = list_1.erase(list_1.begin()); // erase 10
+  EXPECT_EQ(list_1.size(), 2);
+  EXPECT_EQ(*list_1.begin(), 20);
+  EXPECT_EQ(*int_iter, 20);
+  int_iter = list_1.erase(int_iter); // erase 20
+  int_iter = list_1.erase(int_iter); // erase 30
+  // test for seg fault if erase end()
+  // it trigers a memory leak error right before core dump,
+  // which it is expected. Turned off when running memtest
+  //EXPECT_DEATH(int_iter = list_1.erase(list_1.end()), "");
 }
