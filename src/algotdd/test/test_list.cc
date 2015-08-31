@@ -16,6 +16,7 @@ class listTest : public testing::Test {
   list<int> list_empty;
   ::list<std::string> list_str;
   list<int>::iterator int_iter;
+  list<std::string>::iterator str_iter;
 };
 
 class listIteratorTest : public testing::Test {
@@ -147,6 +148,7 @@ TEST_F(listTest, InsertLvalue) {
   EXPECT_EQ(*ret_iter, 20);
   EXPECT_EQ(*(++ret_iter), 10);
   EXPECT_TRUE(++ret_iter == list_empty.end());
+
   // insert pass begin() and pass end() should fail
   // the following would not even compile:
   // list_empty.insert(++list_empty.end(), 100);
@@ -156,12 +158,28 @@ TEST_F(listTest, InsertLvalue) {
 TEST_F(listTest, InsertRvalue) {
   std::string str("insert rvalue");
   size_t old_size = list_str.size();
-  list<std::string>::iterator str_iter =
-      list_str.insert(list_str.begin(), std::move(str));
+  str_iter = list_str.insert(list_str.begin(), std::move(str));
   EXPECT_EQ(*str_iter, "insert rvalue");
   EXPECT_TRUE(str_iter == list_str.begin());
   EXPECT_EQ(++old_size, list_str.size());
   EXPECT_TRUE(str.empty());
+}
+
+TEST_F(listTest, InsertConstObject) {
+  // insert const object by lvalue:
+  const std::string const_str("const string");
+  size_t old_size = list_str.size();
+  str_iter = list_str.insert(list_str.begin(), const_str);
+  EXPECT_EQ(++old_size, list_str.size());
+  EXPECT_EQ(*str_iter, "const string");
+  EXPECT_EQ(const_str, "const string");
+
+  // insert const objects by rvalue:
+  // std::move automatically degrade to a copy insert
+  str_iter = list_str.insert(list_str.begin(), std::move(const_str));
+  EXPECT_EQ(++old_size, list_str.size());
+  EXPECT_EQ(*str_iter, "const string");
+  EXPECT_EQ(const_str, "const string");
 }
 
 
