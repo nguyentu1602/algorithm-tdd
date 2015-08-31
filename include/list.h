@@ -2,7 +2,7 @@
 #define LIST_H_
 #include <cstddef>
 #include <utility>
-
+#include <iostream>
 /* The list data structure. support constant time insertion and removal
    of element anywhere in the containter. Fast random access is not a
    feature. Follow STL's implementation as double-linked list, thus allow
@@ -204,6 +204,17 @@ class list {
     }
   }
   // 3. assignment operator
+  list& operator=(const list& rhs) {
+    // check for self-assignment
+    if(&rhs != this) {
+      clear();
+      const_iterator itr = rhs.begin();
+      while(itr != rhs.end()) {
+        push_back(*itr++);
+      }
+    }
+    return *this;
+  }
   // 4. move ctor
   // 5. move assignment operator
 
