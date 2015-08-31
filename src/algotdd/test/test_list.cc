@@ -14,7 +14,6 @@ class listTest : public testing::Test {
   ::list<int> list_1;
   ::list<int> list_2;
   list<int> list_empty;
-
   ::list<std::string> list_str;
   list<int>::iterator int_iter;
 };
@@ -153,6 +152,18 @@ TEST_F(listTest, InsertLvalue) {
   // list_empty.insert(++list_empty.end(), 100);
   // list_empty.insert(--list_empty.begin(), 100);
 }
+
+TEST_F(listTest, InsertRvalue) {
+  std::string str("insert rvalue");
+  size_t old_size = list_str.size();
+  list<std::string>::iterator str_iter =
+      list_str.insert(list_str.begin(), std::move(str));
+  EXPECT_EQ(*str_iter, "insert rvalue");
+  EXPECT_TRUE(str_iter == list_str.begin());
+  EXPECT_EQ(++old_size, list_str.size());
+  EXPECT_TRUE(str.empty());
+}
+
 
 TEST_F(listTest, EraseAtIter) {
   int_iter = list_1.erase(list_1.begin()); // erase 10
