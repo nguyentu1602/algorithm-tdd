@@ -92,6 +92,12 @@ class list_const_iterator {
     return retrieve();
   }
 
+  // The following virtual keywords allow derived class to override these operators,
+  // and make sure if we have a pointer of type pointing to base, that actually points
+  // to an object of derived type, then the method called will be the override method
+  // defined in the derived class, not the original method in the base class.
+  // TODO: check whether we need virtual here.
+
   // prefix form ++itr increments first, return the object later
   virtual list_const_iterator& operator++() {
     // this signature is for the prefix form ++itr
@@ -137,6 +143,40 @@ class list_const_iterator {
   // why: because we want the ctor available to the list class only
   list_const_iterator(listNode<E>* p) : current_{p} {}
 };
+
+// class list_iterator inherites all the public attributes of the class
+// list_const_iterator; we can add new data, add new methods or redefine old methods.
+// When we add new data or change inherited methods we need the virtual keyword in
+// the base-class (list_const_iterator)
+// The main difference between this class and the base class is that we introduce
+// another version of operator*() which acts as a MUTATOR.
+
+template <typename E>
+class list_iterator : public list_const_iterator<E> {
+  // hack to make test works - because derived class does not inherit friendship
+  friend class listIteratorTest;
+  friend class list<E>;
+ public:
+  list_iterator() {}
+
+  // newly-introduced MUTATOR
+  E& operator*() {
+    return list_const_iterator<E>::retrieve();
+  }
+
+  // re-introdued ACCESSOR
+  const E& operator*() const {
+    return list_const_iterator<E>::operator*();
+  }
+
+  // all operations ++, --(pre & post), == and != are inherited from base
+
+ protected:
+  // protected constructor for the iterator
+  // it actually calls the const_iterator constructor - DRY here.
+  list_iterator(listNode<E>* p) : list_const_iterator<E> {p} {}
+};
+
 
 template <typename E>
 class list {
