@@ -2,14 +2,18 @@
 #include "gtest/gtest.h"
 #include <string>
 
+
 class listTest : public testing::Test {
  protected:
   virtual void SetUp() {
     list_1.insert(list_1.begin(), 10);
     int_iter = list_1.insert(list_1.end(), 30);
     int_iter = list_1.insert(int_iter, 20);
+    str = "a string";
   }
   virtual void TearDown() {}
+  // class constant
+
   // setup fixtures
   ::list<int> list_1;
   ::list<int> list_2;
@@ -17,6 +21,7 @@ class listTest : public testing::Test {
   ::list<std::string> list_str;
   list<int>::iterator int_iter;
   list<std::string>::iterator str_iter;
+  std::string str;
 };
 
 class listIteratorTest : public testing::Test {
@@ -156,10 +161,9 @@ TEST_F(listTest, InsertLvalue) {
 }
 
 TEST_F(listTest, InsertRvalue) {
-  std::string str("insert rvalue");
   size_t old_size = list_str.size();
   str_iter = list_str.insert(list_str.begin(), std::move(str));
-  EXPECT_EQ(*str_iter, "insert rvalue");
+  EXPECT_EQ(*str_iter, "a string");
   EXPECT_TRUE(str_iter == list_str.begin());
   EXPECT_EQ(++old_size, list_str.size());
   EXPECT_TRUE(str.empty());
@@ -168,18 +172,20 @@ TEST_F(listTest, InsertRvalue) {
 TEST_F(listTest, InsertConstObject) {
   // insert const object by lvalue:
   const std::string const_str("const string");
+  const std::string CONST_STR(const_str);
+
   size_t old_size = list_str.size();
   str_iter = list_str.insert(list_str.begin(), const_str);
   EXPECT_EQ(++old_size, list_str.size());
-  EXPECT_EQ(*str_iter, "const string");
-  EXPECT_EQ(const_str, "const string");
+  EXPECT_EQ(*str_iter, CONST_STR);
+  EXPECT_EQ(const_str, CONST_STR);
 
   // insert const objects by rvalue:
   // std::move automatically degrade to a copy insert
   str_iter = list_str.insert(list_str.begin(), std::move(const_str));
   EXPECT_EQ(++old_size, list_str.size());
-  EXPECT_EQ(*str_iter, "const string");
-  EXPECT_EQ(const_str, "const string");
+  EXPECT_EQ(*str_iter, CONST_STR);
+  EXPECT_EQ(const_str, CONST_STR);
 }
 
 
@@ -195,3 +201,32 @@ TEST_F(listTest, EraseAtIter) {
   // which it is expected. Turned off when running memtest
   //EXPECT_DEATH(int_iter = list_1.erase(list_1.end()), "");
 }
+
+TEST_F(listTest, PushFront) {
+  // lvalue version
+  size_t old_size = list_1.size();
+  list_1.push_front(10);
+  EXPECT_EQ(++old_size, list_1.size());
+  EXPECT_EQ(*list_1.begin(), 10);
+
+  list_1.push_front(20);
+  EXPECT_EQ(++old_size, list_1.size());
+  EXPECT_EQ(*list_1.begin(), 20);
+  EXPECT_EQ(*(++list_1.begin()), 10);
+  EXPECT_TRUE(--(++list_1.begin()) == list_1.begin());
+
+  // rvalue version
+  old_size = list_str.size();
+  list_str.push_front(std::move(str));
+  EXPECT_EQ(++old_size, list_str.size());
+  EXPECT_EQ(*list_str.begin(), "a string");
+  EXPECT_TRUE(str.empty());
+}
+
+// Test_F(listTest, PushBack) {
+
+// }
+
+// TEST_F(listTest, FrontBack) {
+
+// }
