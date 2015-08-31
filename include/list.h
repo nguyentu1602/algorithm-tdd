@@ -220,6 +220,15 @@ class list {
     return iterator(ptr->prev_);
   }
 
+  // insert rvalue using move semantic
+  iterator insert(iterator iter, E&& element) {
+    listNode<E>* ptr = iter.current_;
+    ptr->prev_->next_ = new listNode<E> (std::move(element), ptr->prev_, ptr);
+    ptr->prev_ = ptr->prev_->next_;
+    size_++;
+    return iterator(ptr->prev_);
+  }
+
   // erase the node that the iterator is pointing to
   // return an iterator pointing to one node after the deleted
   iterator erase(iterator iter) {
@@ -231,6 +240,7 @@ class list {
     --size_;
     return to_return;
   }
+
 
   void clear() {
     while(!empty()) {
