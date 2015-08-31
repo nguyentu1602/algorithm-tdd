@@ -148,6 +148,32 @@ TEST_F(listTest, CopyCtor) {
   EXPECT_TRUE(list_nothing.empty());
 }
 
+TEST_F(listTest, AssigmentOperator) {
+  for (int i = 0; i < 100; i++) {
+    list_1.push_back(i);
+  }
+  list_2 = list_1;
+  EXPECT_EQ(list_2.size(), list_1.size());
+  int_iter = list_1.begin();
+  list<int>::const_iterator temp_iter = list_2.begin();
+  while(temp_iter != list_2.end()
+        && int_iter != list_1.end())
+  {
+    EXPECT_EQ(*temp_iter++, *int_iter++);
+  }
+
+  // edge case: empty list
+  list_1 = list_empty;
+  EXPECT_TRUE(list_1.empty());
+
+  // edge case: self-assign
+  const list<int> old_list_2 = list_2;
+  list_2 = list_2;
+  // make sure list_2 is not emptied
+  EXPECT_EQ(list_2.size(), old_list_2.size());
+  // TODO: compare list_2 and old_list_2 elementwise
+}
+
 
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
