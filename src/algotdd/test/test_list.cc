@@ -223,9 +223,26 @@ TEST_F(listTest, PushFront) {
   EXPECT_TRUE(str.empty());
 }
 
-// Test_F(listTest, PushBack) {
+TEST_F(listTest, PushBack) {
+  // lvalue version
+  size_t old_size = list_1.size();
+  list_1.push_back(10);
+  EXPECT_EQ(++old_size, list_1.size());
+  EXPECT_EQ(*(--list_1.end()), 10);
 
-// }
+  list_1.push_back(20);
+  EXPECT_EQ(++old_size, list_1.size());
+  EXPECT_EQ(*(--list_1.end()), 20);
+  EXPECT_EQ(*(--(--list_1.end())), 10);
+  EXPECT_TRUE(++(--list_1.end()) == list_1.end());
+
+  // rvalue version
+  old_size = list_str.size();
+  list_str.push_back(std::move(str));
+  EXPECT_EQ(++old_size, list_str.size());
+  EXPECT_EQ(*(--list_str.end()), "a string");
+  EXPECT_TRUE(str.empty());
+}
 
 // TEST_F(listTest, FrontBack) {
 
