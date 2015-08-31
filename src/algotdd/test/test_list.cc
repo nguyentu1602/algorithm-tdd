@@ -92,6 +92,7 @@ TEST_F(listIteratorTest, ConstIterator) {
 TEST_F(listIteratorTest, Iterator) {
   list_iterator<int> iter_temp = iter;
   // testing increment and decrement of iterator
+  // which are all inherited from base
   EXPECT_EQ(++iter_temp, iter_1);
   EXPECT_EQ(--iter_temp, iter);
   EXPECT_EQ(iter_temp++, iter);
