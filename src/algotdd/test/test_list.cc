@@ -11,6 +11,7 @@ class listTest : public testing::Test {
   // setup fixtures
   ::list<int> list_1;
   ::list<int> list_2;
+  list<int> list_empty;
   ::list<std::string> list_str;
 };
 
@@ -115,12 +116,10 @@ TEST_F(listIteratorTest, Iterator) {
 
 
 TEST_F(listTest, DefaultCtor) {
-  list<int> list_temp;
-  EXPECT_EQ(0u, list_temp.size());
-  EXPECT_TRUE(list_temp.empty());
+  EXPECT_EQ(0u, list_empty.size());
+  EXPECT_TRUE(list_empty.empty());
 }
 
 TEST_F(listTest, BeginEnd) {
-  list<int> list_temp;
-  EXPECT_EQ(list_temp.begin(), list_temp.end());
+  EXPECT_EQ(list_empty.begin(), list_empty.end());
 }
