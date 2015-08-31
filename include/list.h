@@ -273,6 +273,14 @@ class list {
     return iterator(tail_);
   }
 
+  const_iterator begin() const {
+    return const_iterator(head_->next_);
+  }
+
+  const_iterator end() const {
+    return const_iterator(tail_);
+  }
+
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
   // we can make to sentinel nodes for head_ and tail_ to simplify implementation
