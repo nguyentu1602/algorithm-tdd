@@ -220,10 +220,24 @@ class list {
     return iterator(ptr->prev_);
   }
 
+  // erase the node that the iterator is pointing to
+  // return an iterator pointing to one node after the deleted
+  iterator erase(iterator iter) {
+    listNode<E>* to_del = iter.current_;
+    iterator to_return (to_del->next_);
+    to_del->prev_->next_ = to_del->next_;
+    to_del->next_->prev_ = to_del->prev_;
+    delete to_del;
+    --size_;
+    return to_return;
+  }
 
   void clear() {
-    // NOT YET IMPLEMENTED
+    while(!empty()) {
+      erase(begin());
+    }
   }
+
   // iterators
   iterator begin() {
     return iterator(head_->next_);
