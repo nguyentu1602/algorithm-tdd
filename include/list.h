@@ -196,6 +196,13 @@ class list {
     delete tail_;
   }
   // 2. copy ctor
+  list(const list& lhs) {
+    init();
+    const_iterator itr = lhs.begin();
+    while(itr != lhs.end()) {
+      push_back(*itr++);
+    }
+  }
   // 3. assignment operator
   // 4. move ctor
   // 5. move assignment operator
