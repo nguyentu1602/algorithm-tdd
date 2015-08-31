@@ -77,6 +77,17 @@ class list_const_iterator {
  public:
   list_const_iterator() : current_ {nullptr} {}
   // operators
+  // The overloaded operator * on a const_iterator will return a const reference
+  // to the E inside the node.
+  // The rhs const enforces that the reference returned is const, i.e. you cannot change
+  // the E object. Notice that const on return value of a funtion only makes sense when
+  // you return by reference.
+  // The lhs const enforces that the function receives a "const *this" pointer
+  // to self only; thus allowing the method to operate on const object. It is a promise
+  // not to change anything about the object, so in this case you cannot alter the
+  // "current_" data member of the const_iterator object.
+  // in short, the two consts make a const_iterator "const", as opposed to a normal iterator.
+
   const E& operator*() const {
     return retrieve();
   }
@@ -118,7 +129,7 @@ class list_const_iterator {
   // why protected: because we want the derived class iterator to
   // have access to these data and methods
   listNode<E>* current_;
-  // retrieve() must return E&, not just the node
+  // retrieve() must return E&, not just the node, and only on
   E& retrieve() const {
     return current_->element_;
   }
@@ -126,7 +137,6 @@ class list_const_iterator {
   // why: because we want the ctor available to the list class only
   list_const_iterator(listNode<E>* p) : current_{p} {}
 };
-
 
 template <typename E>
 class list {
