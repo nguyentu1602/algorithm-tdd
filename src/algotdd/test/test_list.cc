@@ -123,3 +123,22 @@ TEST_F(listTest, DefaultCtor) {
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
 }
+
+TEST_F(listTest, InsertLvalue) {
+  // iter is pointing to tail_
+  list<int>::iterator iter = list_empty.begin();
+  // testing iterator insert (iterator, const E&)
+  int x = 10;
+  list<int>::iterator ret_iter = list_empty.insert(iter, x);
+  EXPECT_TRUE(--iter == ret_iter);
+  // iter--;
+  EXPECT_EQ(*ret_iter, 10);
+  EXPECT_EQ(list_empty.size(), 1);
+  EXPECT_EQ(++ret_iter, list_empty.end());
+  --ret_iter; // set ret_iter to point to 10
+  ret_iter = list_empty.insert(ret_iter, x + 10);
+  EXPECT_EQ(list_empty.size(), 2);
+  EXPECT_EQ(*ret_iter, 20);
+  EXPECT_EQ(*(++ret_iter), 10);
+  EXPECT_TRUE(++ret_iter == list_empty.end());
+}
