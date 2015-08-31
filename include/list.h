@@ -183,7 +183,7 @@ class list {
  public:
   // the iterator type - make them testable!
   typedef list_const_iterator<E> const_iterator;
-
+  typedef list_iterator<E> iterator;
   // the big five:
   // 0. default ctor
   list() {
@@ -211,6 +211,14 @@ class list {
 
   void clear() {
     // NOT YET IMPLEMENTED
+  }
+  // iterators
+  iterator begin() {
+    return iterator(head_->next_);
+  }
+
+  iterator end() {
+    return iterator(tail_);
   }
 
  private:
