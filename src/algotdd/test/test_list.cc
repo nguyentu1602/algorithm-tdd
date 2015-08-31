@@ -27,6 +27,8 @@ class listIteratorTest : public testing::Test {
     tail_->prev_ = head_->next_;
     c_iter = list_const_iterator<int> (head_);
     c_iter_1 = list_const_iterator<int> (head_->next_);
+    iter = list_iterator<int> (head_);
+    iter_1 = list_iterator<int> (head_->next_);
   }
 
   virtual void TearDown() {
@@ -38,6 +40,9 @@ class listIteratorTest : public testing::Test {
   listNode<int>* tail_;
   list_const_iterator<int> c_iter;
   list_const_iterator<int> c_iter_1;
+  list_iterator<int> iter;
+  list_iterator<int> iter_1;
+
 };
 
 // test the helper class listNodeTest
@@ -61,22 +66,52 @@ TEST(listHelperTest, ListNode) {
   EXPECT_TRUE(element_2.empty());
 }
 
-TEST_F(listIteratorTest, Iterators) {
+TEST_F(listIteratorTest, ConstIterator) {
   list_const_iterator<int> c_iter_temp = c_iter;
-  // testing increment and decrement
+  // testing increment and decrement of const_iterator
   EXPECT_EQ(++c_iter_temp, c_iter_1);
   EXPECT_EQ(--c_iter_temp, c_iter);
   EXPECT_EQ(c_iter_temp++, c_iter);
   EXPECT_EQ(c_iter_temp, c_iter_1);
   EXPECT_EQ(c_iter_temp--, c_iter_1);
   EXPECT_EQ(c_iter_temp, c_iter);
+  EXPECT_TRUE(c_iter_temp == c_iter);
+  EXPECT_TRUE(c_iter_temp != c_iter_1);
 
-  // testing accessor
+  // testing access capability of const_iterator
   EXPECT_EQ(0, *c_iter_temp);
   EXPECT_EQ(10, *(++c_iter_temp));
   EXPECT_EQ(20, *(++c_iter_temp));
   EXPECT_EQ(10, *(--c_iter_temp));
+
+  // testing non-modifying capability of const_iterator:
+  // will not even compile:
+  //*c_iter_temp = 100;
 }
+
+TEST_F(listIteratorTest, Iterator) {
+  list_iterator<int> iter_temp = iter;
+  // testing increment and decrement of iterator
+  EXPECT_EQ(++iter_temp, iter_1);
+  EXPECT_EQ(--iter_temp, iter);
+  EXPECT_EQ(iter_temp++, iter);
+  EXPECT_EQ(iter_temp, iter_1);
+  EXPECT_EQ(iter_temp--, iter_1);
+  EXPECT_EQ(iter_temp, iter);
+  EXPECT_TRUE(iter_temp == iter);
+  EXPECT_TRUE(iter_temp != iter_1);
+
+  // testing access capability of iterator
+  EXPECT_EQ(0, *iter_temp);
+  EXPECT_EQ(10, *(++iter_temp));
+  EXPECT_EQ(20, *(++iter_temp));
+  EXPECT_EQ(10, *(--iter_temp));
+
+  // testing modifying capability of iterator:
+  *iter_temp = 100;
+  EXPECT_EQ(*iter_temp, 100);
+}
+
 
 TEST_F(listTest, DefaultCtor) {
   list<int> list_temp;
