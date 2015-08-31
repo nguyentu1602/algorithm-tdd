@@ -220,6 +220,14 @@ class list {
     insert(begin(), std::move(element));
   }
 
+  void push_back(const E& element) {
+    insert(end(), element);
+  }
+
+  void push_back(E&& element) {
+    insert(end(), std::move(element));
+  }
+
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
   // insert by lvalue calls insert by rvalue to conform to DRY
