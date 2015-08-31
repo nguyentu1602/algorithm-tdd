@@ -130,7 +130,22 @@ TEST_F(listTest, DefaultCtor) {
 }
 
 TEST_F(listTest, CopyCtor) {
+  for (int i = 0; i < 100; i++) {
+    list_1.push_back(i);
+  }
+  const list<int> list_temp = list_1;
+  EXPECT_EQ(list_temp.size(), list_1.size());
+  int_iter = list_1.begin();
+  list<int>::const_iterator temp_iter = list_temp.begin();
+  while(temp_iter != list_temp.end()
+        && int_iter != list_1.end())
+  {
+    EXPECT_EQ(*temp_iter++, *int_iter++);
+  }
 
+  // edge case: empty list
+  list<int> list_nothing = list_empty;
+  EXPECT_TRUE(list_nothing.empty());
 }
 
 
