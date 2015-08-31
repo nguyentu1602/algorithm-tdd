@@ -196,10 +196,10 @@ class list {
     delete tail_;
   }
   // 2. copy ctor
-  list(const list& lhs) {
+  list(const list& rhs) {
     init();
-    const_iterator itr = lhs.begin();
-    while(itr != lhs.end()) {
+    const_iterator itr = rhs.begin();
+    while(itr != rhs.end()) {
       push_back(*itr++);
     }
   }
