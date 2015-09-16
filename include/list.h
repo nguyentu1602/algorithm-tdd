@@ -204,16 +204,17 @@ class list {
     }
   }
   // 3. assignment operator
-  list& operator=(const list& rhs) {
-    // check for self-assignment
-    if(&rhs != this) {
-      clear();
-      const_iterator itr = rhs.begin();
-      while(itr != rhs.end()) {
-        push_back(*itr++);
-      }
-    }
+  list& operator=(list rhs) {
+    swap(*this, rhs); // called the overloaded swap function
     return *this;
+  }
+
+  // 3.5 swap() function as helper for assignment operator
+  friend void swap(list& first, list& second) { //no throw
+    using std::swap;
+    swap(first.size_, second.size_);
+    swap(first.head_, second.head_);
+    swap(first.tail_, second.tail_);
   }
   // 4. move ctor
   // 5. move assignment operator
