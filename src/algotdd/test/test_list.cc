@@ -17,6 +17,7 @@ class listTest : public testing::Test {
   // setup fixtures
   ::list<int> list_1;
   ::list<int> list_2;
+  ::list<int> list_3;
   list<int> list_empty;
   ::list<std::string> list_str;
   list<int>::iterator int_iter;
@@ -161,6 +162,15 @@ TEST_F(listTest, AssigmentOperator) {
   {
     EXPECT_EQ(*temp_iter++, *int_iter++);
   }
+  // use a const list as rhs
+  const list<int> const_list = list_1;
+  list_3 = const_list;
+  EXPECT_EQ(const_list.size(), list_3.size());
+  temp_iter = const_list.begin();
+  int_iter = list_3.begin();
+  while (temp_iter != const_list.end()) {
+     EXPECT_EQ(*int_iter++, *temp_iter++);
+  }
 
   // edge case: empty list
   list_1 = list_empty;
@@ -173,7 +183,6 @@ TEST_F(listTest, AssigmentOperator) {
   EXPECT_EQ(list_2.size(), old_list_2.size());
   // TODO: compare list_2 and old_list_2 elementwise
 }
-
 
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
