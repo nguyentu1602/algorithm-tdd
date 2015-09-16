@@ -204,6 +204,15 @@ class list {
     }
   }
   // 3. assignment operator
+  // why not (const list& rhs) as usual? Because of copy elision!
+  // for assignment operator, if we pass-by-reference, we will still
+  // need to copy the list inside the body of the function. If we
+  // pass-by-value, then the copy is done at the parameter list already.
+  // in the case that we don't need to copy, the compiler will automatically
+  // optimize it for us. So that's a rule of thumb: if you need to copy an
+  // object, then let the compiler do it for you at the parameter list, don't
+  // do it yourself. Ref:
+  // http://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
   list& operator=(list rhs) {
     swap(*this, rhs); // called the overloaded swap function
     return *this;
