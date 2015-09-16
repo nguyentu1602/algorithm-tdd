@@ -184,6 +184,30 @@ TEST_F(listTest, AssigmentOperator) {
   // TODO: compare list_2 and old_list_2 elementwise
 }
 
+TEST_F(listTest, MoveCtor) {
+  for (int i = 0; i < 100; i++) {
+    list_1.push_back(i);
+  }
+
+  list<int> old_list_1 = list_1; // require copy ctor to work
+  // invoke move ctor here
+  const list<int> list_temp = std::move(list_1);
+  EXPECT_EQ(list_temp.size(), old_list_1.size());
+  EXPECT_TRUE(list_1.empty());
+  int_iter = old_list_1.begin();
+  list<int>::const_iterator temp_iter = list_temp.begin();
+  while(temp_iter != list_temp.end()
+        && int_iter != old_list_1.end())
+  {
+    EXPECT_EQ(*temp_iter++, *int_iter++);
+  }
+
+  // edge case: empty list
+  list<int> list_nothing = std::move(list_empty);
+  EXPECT_TRUE(list_nothing.empty());
+}
+
+
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
   // decrement pass begin() and increment pass end() should be ok
