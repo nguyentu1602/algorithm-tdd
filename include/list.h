@@ -203,7 +203,7 @@ class list {
       push_back(*itr++);
     }
   }
-  // 3. assignment operator
+  // 3 + 5. assignment operator + move assignment operator
   // why not (const list& rhs) as usual? Because of copy elision!
   // for assignment operator, if we pass-by-reference, we will still
   // need to copy the list inside the body of the function. If we
@@ -213,6 +213,8 @@ class list {
   // object, then let the compiler do it for you at the parameter list, don't
   // do it yourself. Ref:
   // http://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+  // This is actually amazing! serve as both assignment operator and move
+  // assignment operator! clearly a superior way of doing things!
   list& operator=(list rhs) {
     swap(*this, rhs); // called the overloaded swap function
     return *this;
@@ -230,7 +232,7 @@ class list {
     init();
     swap(*this, rhs);
   }
-  // 5. move assignment operator
+  // 5. move assignment operator: NO NEED, embedded in assignment operator
 
   // capacity methods
   bool empty() const {
