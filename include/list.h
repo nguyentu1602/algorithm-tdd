@@ -226,6 +226,10 @@ class list {
     swap(first.tail_, second.tail_);
   }
   // 4. move ctor
+  list(list&& rhs) {
+    init();
+    swap(*this, rhs);
+  }
   // 5. move assignment operator
 
   // capacity methods
