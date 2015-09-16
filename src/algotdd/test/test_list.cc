@@ -207,6 +207,30 @@ TEST_F(listTest, MoveCtor) {
   EXPECT_TRUE(list_nothing.empty());
 }
 
+TEST_F(listTest, MoveAssignmentOperator) {
+  for (int i = 0; i < 100; i++) {
+    list_1.push_back(i);
+  }
+  list_2.push_back(2);
+  list<int> old_list_1 = list_1; // require copy ctor to work
+  list<int> list_temp = list_2;
+  // invoke move assignment operator here
+  list_temp = std::move(list_1);
+  EXPECT_EQ(list_temp.size(), old_list_1.size());
+  EXPECT_TRUE(list_1.empty());
+  int_iter = old_list_1.begin();
+  list<int>::const_iterator temp_iter = list_temp.begin();
+  while(temp_iter != list_temp.end()
+        && int_iter != old_list_1.end())
+  {
+    EXPECT_EQ(*temp_iter++, *int_iter++);
+  }
+
+  // edge case: empty list
+  list<int> list_nothing = list_2;
+  list_nothing = std::move(list_empty);
+  EXPECT_TRUE(list_nothing.empty());
+}
 
 TEST_F(listTest, BeginEnd) {
   EXPECT_EQ(list_empty.begin(), list_empty.end());
