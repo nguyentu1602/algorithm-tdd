@@ -39,13 +39,7 @@
 
    5. Iterators
       begin
-      cbegin
       end
-      cend
-      rbegin
-      crbegin
-      rend
-      crend
  */
 
 template <typename E>
@@ -234,6 +228,12 @@ class list {
   }
   // 5. move assignment operator: NO NEED, embedded in assignment operator
 
+  // TODO: overload operator=()
+  // TODO: resize()
+  // TODO: merge()
+  // TODO: reverse()
+  // TODO: assess the need for splice() what is it?
+
   // capacity methods
   bool empty() const {
     return size_ == 0;
@@ -290,7 +290,6 @@ class list {
     --size_;
     return to_return;
   }
-
 
   void clear() {
     while(!empty()) {
