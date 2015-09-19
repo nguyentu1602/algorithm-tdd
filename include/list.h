@@ -228,12 +228,6 @@ class list {
   }
   // 5. move assignment operator: NO NEED, embedded in assignment operator
 
-  // TODO: overload operator=()
-  // TODO: resize()
-  // TODO: merge()
-  // TODO: reverse()
-  // TODO: assess the need for splice() what is it?
-
   // capacity methods
   bool empty() const {
     return size_ == 0;
@@ -261,6 +255,10 @@ class list {
   void push_back(E&& element) {
     insert(end(), std::move(element));
   }
+
+  // accessors
+  // TODO: front()
+  // TODO: back()
 
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
