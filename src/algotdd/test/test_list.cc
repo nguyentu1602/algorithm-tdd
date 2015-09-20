@@ -1,7 +1,9 @@
 #include "list.h"
 #include "gtest/gtest.h"
 #include <string>
-
+#include <iostream>
+using std::cout;
+using std::endl;
 
 class listTest : public testing::Test {
  protected:
@@ -344,4 +346,19 @@ TEST_F(listTest, PushBack) {
   EXPECT_EQ(++old_size, list_str.size());
   EXPECT_EQ(*(--list_str.end()), "a string");
   EXPECT_TRUE(str.empty());
+}
+
+TEST_F(listTest, FrontBack){
+  // testing front()
+  // tests on normal list
+  list_2.push_front(100);
+  list_2.push_front(200);
+  const list<int> list_const = list_2;
+  EXPECT_EQ(list_2.front(), *list_2.begin());
+  EXPECT_EQ(list_2.front(), 200);
+
+  // can we modify the front reference?
+  int& rep = list_2.front();
+  rep = 10;
+  EXPECT_EQ(10, list_2.front());
 }
