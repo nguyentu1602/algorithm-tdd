@@ -425,10 +425,7 @@ TEST_F(listTest, Splice) {
 
   // test splice() with just 2 parameters
   list_2.push_back(100);
-
-  // this test fail so I disable it for now:
   list_2.splice(list_2.begin(), list_empty);
-  // list_2.splice(list_2.end(), list_empty);
   EXPECT_EQ(2, list_2.size());
   EXPECT_EQ(10, list_2.front());
   EXPECT_EQ(100, list_2.back());
