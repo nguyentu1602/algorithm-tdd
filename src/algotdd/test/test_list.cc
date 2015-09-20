@@ -361,4 +361,22 @@ TEST_F(listTest, FrontBack){
   int& rep = list_2.front();
   rep = 10;
   EXPECT_EQ(10, list_2.front());
+
+  // test on const list
+  EXPECT_EQ(list_const.front(), *list_const.begin());
+  EXPECT_EQ(list_const.front(), 200);
+
+  // testing back()
+  // tests on normal lisk
+  EXPECT_EQ(list_2.back(), *(--list_2.end()));
+  EXPECT_EQ(list_2.back(), 100);
+
+  // can we modify the back reference?
+  int& rep_back = list_2.back();
+  rep_back = 20000;
+  EXPECT_EQ(20000, list_2.back());
+
+  // testing on const list
+  EXPECT_EQ(list_const.back(), *(--list_const.end()));
+  EXPECT_EQ(list_const.back(), 100);
 }
