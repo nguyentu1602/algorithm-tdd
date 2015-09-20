@@ -163,6 +163,26 @@ class list_iterator : public list_const_iterator<E> {
   }
 
   // all operations ++, --(pre & post), == and != are inherited from base
+  // provide operators for the inherited class
+  list_iterator & operator++() {
+    this->current_ = this->current_->next_;
+    return *this;
+  }
+  list_iterator operator++( int ) {
+    list_iterator old_ = *this;
+    ++( *this );
+    return old_;
+  }
+
+  list_iterator & operator--() {
+    this->current_ = this->current_->prev_;
+    return *this;
+  }
+  list_iterator operator--( int ) {
+    list_iterator old_ = *this;
+    --( *this );
+    return old_;
+  }
 
  protected:
   // protected constructor for the iterator
