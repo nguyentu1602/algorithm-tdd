@@ -86,33 +86,32 @@ class list_const_iterator {
     return retrieve();
   }
 
-  // The following virtual keywords allow derived class to override these operators,
+  // The virtual keywords with operators allow derived class to override these operators,
   // and make sure if we have a pointer of type pointing to base, that actually points
   // to an object of derived type, then the method called will be the override method
   // defined in the derived class, not the original method in the base class.
-  // TODO: check whether we need virtual here.
-
+  // ATTN: we actually don't need the virtual keyword here.
   // prefix form ++itr increments first, return the object later
-  virtual list_const_iterator& operator++() {
+  list_const_iterator& operator++() {
     // this signature is for the prefix form ++itr
     current_ = current_->next_; // change the state of the const_iterator obj
     return *this; // return reference to the current object
   }
 
   // postfix form itr++ return the current value first, increment later
-  virtual list_const_iterator operator++(int) {
+  list_const_iterator operator++(int) {
     // this signature is for the postfix form of itr++
     list_const_iterator old_ = *this; // return
     ++(*this);
     return old_;
   }
 
-  virtual list_const_iterator& operator--() {
+  list_const_iterator& operator--() {
     current_ = current_->prev_;
     return *this;
   }
 
-  virtual list_const_iterator operator--(int) {
+  list_const_iterator operator--(int) {
     list_const_iterator old_ = *this;
     --(*this);
     return old_;
