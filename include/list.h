@@ -276,8 +276,6 @@ class list {
   }
 
   // accessors
-  // TODO: front()
-  // TODO: back()
   E& front() {
     return *begin();
   }
