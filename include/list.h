@@ -447,6 +447,11 @@ class list {
     }
   }
 
+  void
+  splice(const_iterator pos, list& other) {
+    splice(pos, other, other.begin(), other.end());
+  }
+
   // void
   // splice(const_iterator pos, list&& other,
   //        const_iterator first, const_iterator last) {
