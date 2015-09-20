@@ -278,6 +278,12 @@ class list {
   // accessors
   // TODO: front()
   // TODO: back()
+  E& front() {
+    return *begin();
+  }
+  const E& front() const {
+    return *begin();
+  }
 
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
