@@ -28,6 +28,7 @@
       swap()  // optional
 
    3. Operations
+      sort()
       merge()
       splice()
       reverse()
@@ -68,6 +69,16 @@ class list_const_iterator {
   friend class listIteratorTest;
   // this class stores a pointers to a listNode object
   // and provide basic iterator operations: =, ==, ++, and !=
+
+  // typedef for all:
+  typedef list_const_iterator<E> _Self;
+  typedef listNode<E> _Node;
+  typedef std::ptrdiff_t difference_type;
+
+  typedef E value_type;
+  typedef E* pointer;
+  typedef E& reference;
+
  public:
   list_const_iterator() : current_ {nullptr} {}
   // operators
@@ -82,7 +93,7 @@ class list_const_iterator {
   // "current_" data member of the const_iterator object.
   // in short, the two consts make a const_iterator "const", as opposed to a normal iterator.
 
-  const E& operator*() const {
+  const reference operator*() const {
     return retrieve();
   }
 
@@ -92,49 +103,49 @@ class list_const_iterator {
   // defined in the derived class, not the original method in the base class.
   // ATTN: we actually don't need the virtual keyword here.
   // prefix form ++itr increments first, return the object later
-  list_const_iterator& operator++() {
+  _Self& operator++() {
     // this signature is for the prefix form ++itr
     current_ = current_->next_; // change the state of the const_iterator obj
     return *this; // return reference to the current object
   }
 
   // postfix form itr++ return the current value first, increment later
-  list_const_iterator operator++(int) {
+  _Self operator++(int) {
     // this signature is for the postfix form of itr++
-    list_const_iterator old_ = *this; // return
+    _Self old_ = *this; // return
     ++(*this);
     return old_;
   }
 
-  list_const_iterator& operator--() {
+  _Self& operator--() {
     current_ = current_->prev_;
     return *this;
   }
 
-  list_const_iterator operator--(int) {
-    list_const_iterator old_ = *this;
+  _Self operator--(int) {
+    _Self old_ = *this;
     --(*this);
     return old_;
   }
 
-  bool operator==(const list_const_iterator & rhs) const {
+  bool operator==(const _Self& rhs) const {
     return current_ == rhs.current_;
   }
 
-  bool operator!=(const list_const_iterator & rhs) const {
+  bool operator!=(const _Self& rhs) const {
     return !(*this == rhs); // compare the references of the two iterator objects
   }
  protected:
   // why protected: because we want the derived class iterator to
   // have access to these data and methods
-  listNode<E>* current_;
+  _Node* current_;
   // retrieve() must return E&, not just the node, and only on
-  E& retrieve() const {
+  reference retrieve() const {
     return current_->element_;
   }
   // protected parametrized-ctor for const_iterator
   // why: because we want the ctor available to the list class only
-  list_const_iterator(listNode<E>* p) : current_{p} {}
+  list_const_iterator(_Node* p) : current_{p} {}
 };
 
 // class list_iterator inherites all the public attributes of the class
@@ -279,6 +290,7 @@ class list {
   E& front() {
     return *begin();
   }
+
   const E& front() const {
     return *begin();
   }
