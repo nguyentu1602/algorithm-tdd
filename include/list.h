@@ -424,7 +424,7 @@ class list {
   _Node* tail_;
 
   static size_t
-  _S_distance(const listNode* first, const listNode* last) {
+  _S_distance(const _Node* first, const _Node* last) {
     size_t _n = 0;
     while(first != last) {
       first = first->next_;
