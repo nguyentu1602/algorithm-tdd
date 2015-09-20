@@ -402,7 +402,7 @@ TEST_F(listTest, Splice) {
   // backward loop
   while(list_iter != list_1.begin()
         && res_iter != result.begin()) {
-    EXPECT_EQ(*res_iter--, *list_iter--);
+    EXPECT_EQ(*--res_iter, *--list_iter);
   }
   EXPECT_EQ(0, list_2.size());
   // test no iterator was invalidated
