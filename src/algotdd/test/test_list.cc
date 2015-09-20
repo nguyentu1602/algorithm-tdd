@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 #include <string>
 #include <iostream>
+#include <vector>
 using std::cout;
 using std::endl;
 
@@ -79,29 +80,6 @@ TEST(listHelperTest, ListNode) {
   EXPECT_TRUE(element_2.empty());
 }
 
-TEST_F(listIteratorTest, ConstIterator) {
-  list_const_iterator<int> c_iter_temp = c_iter;
-  // testing increment and decrement of const_iterator
-  EXPECT_EQ(++c_iter_temp, c_iter_1);
-  EXPECT_EQ(--c_iter_temp, c_iter);
-  EXPECT_EQ(c_iter_temp++, c_iter);
-  EXPECT_EQ(c_iter_temp, c_iter_1);
-  EXPECT_EQ(c_iter_temp--, c_iter_1);
-  EXPECT_EQ(c_iter_temp, c_iter);
-  EXPECT_TRUE(c_iter_temp == c_iter);
-  EXPECT_TRUE(c_iter_temp != c_iter_1);
-
-  // testing access capability of const_iterator
-  EXPECT_EQ(0, *c_iter_temp);
-  EXPECT_EQ(10, *(++c_iter_temp));
-  EXPECT_EQ(20, *(++c_iter_temp));
-  EXPECT_EQ(10, *(--c_iter_temp));
-
-  // testing non-modifying capability of const_iterator:
-  // will not even compile:
-  //*c_iter_temp = 100;
-}
-
 TEST_F(listIteratorTest, Iterator) {
   list_iterator<int> iter_temp = iter;
   // testing increment and decrement of iterator
@@ -126,6 +104,28 @@ TEST_F(listIteratorTest, Iterator) {
   EXPECT_EQ(*iter_temp, 100);
 }
 
+TEST_F(listIteratorTest, ConstIterator) {
+  list_const_iterator<int> c_iter_temp = c_iter;
+  // testing increment and decrement of const_iterator
+  EXPECT_EQ(++c_iter_temp, c_iter_1);
+  EXPECT_EQ(--c_iter_temp, c_iter);
+  EXPECT_EQ(c_iter_temp++, c_iter);
+  EXPECT_EQ(c_iter_temp, c_iter_1);
+  EXPECT_EQ(c_iter_temp--, c_iter_1);
+  EXPECT_EQ(c_iter_temp, c_iter);
+  EXPECT_TRUE(c_iter_temp == c_iter);
+  EXPECT_TRUE(c_iter_temp != c_iter_1);
+
+  // testing access capability of const_iterator
+  EXPECT_EQ(0, *c_iter_temp);
+  EXPECT_EQ(10, *(++c_iter_temp));
+  EXPECT_EQ(20, *(++c_iter_temp));
+  EXPECT_EQ(10, *(--c_iter_temp));
+
+  // testing non-modifying capability of const_iterator:
+  // will not even compile:
+  //*c_iter_temp = 100;
+}
 
 TEST_F(listTest, DefaultCtor) {
   EXPECT_EQ(0u, list_empty.size());
