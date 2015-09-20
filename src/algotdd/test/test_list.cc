@@ -380,3 +380,34 @@ TEST_F(listTest, FrontBack){
   EXPECT_EQ(list_const.back(), *(--list_const.end()));
   EXPECT_EQ(list_const.back(), 100);
 }
+
+TEST_F(listTest, Splice) {
+  list_2.push_back(1);
+  list_2.push_back(2);
+  // list_1 starts with 10-20-30
+  list<int>::const_iterator pos = ++list_1.begin(); // pointing to 20
+  list<int>::const_iterator first = list_2.begin();
+  list<int>::const_iterator last = list_2.end();
+  list_1.splice(pos, list_2, first, last);
+
+  std::vector<int> result {10, 1, 2, 20, 30};
+  auto list_iter = list_1.begin();
+  auto res_iter = result.begin();
+  while(list_iter != list_1.end()
+        && res_iter != result.end()) {
+    EXPECT_EQ(*res_iter++, *list_iter++);
+  }
+  EXPECT_EQ(0, list_2.size());
+  // test no iterator was invalidated
+  EXPECT_EQ(*pos, 20);
+  EXPECT_EQ(*first, 1);
+  EXPECT_EQ(last, list_2.end());
+
+  // test on empty list
+  list_1.splice(pos, list_empty, list_empty.begin(), list_empty.end());
+  EXPECT_EQ(5, list_1.size());
+  list_empty.splice(list_empty.end(), list_1, list_1.begin(), ++list_1.begin());
+  EXPECT_EQ(10, list_empty.front());
+  EXPECT_EQ(1, list_1.front());
+  EXPECT_EQ(4, list_1.size());
+}
