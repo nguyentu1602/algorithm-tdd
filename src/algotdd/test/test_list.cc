@@ -432,4 +432,12 @@ TEST_F(listTest, Splice) {
   EXPECT_EQ(100, *(++list_2.begin()));
   EXPECT_EQ(100, *(--list_2.end()));
   EXPECT_TRUE(list_empty.empty());
+
+  // test splice() with 3 parameters
+  list_empty.splice(list_empty.begin(), list_2, list_2.begin());
+  EXPECT_EQ(1, list_empty.size());
+  EXPECT_EQ(10, list_empty.front());
+  EXPECT_EQ(10, list_empty.back());
+  EXPECT_EQ(1, list_empty.size());
+  EXPECT_EQ(100, list_2.front());
 }
