@@ -464,6 +464,9 @@ class list {
   //        const_iterator first, const_iterator last) {
   // }
 
+  // TODO: implement sort() using splice(). Look into list.tcc in STL
+  // for more hints
+
 
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
