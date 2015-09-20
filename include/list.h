@@ -425,7 +425,6 @@ class list {
   void
   splice(const_iterator pos, list& other,
          const_iterator first, const_iterator last) {
-    // do we need to test for special case here?
     if (first != last) {
       // get the number of item in [first, last)
       size_t difference = _S_distance (first.current_, last.current_);
@@ -443,7 +442,7 @@ class list {
       first.current_->prev_ = pos_prev.current_;
       last_prev.current_->next_ = pos.current_;
       pos_prev.current_->next_ = first.current_;
-      pos.current_->prev_ = pos_prev.current_;
+      pos.current_->prev_ = last_prev.current_;
       size_ += difference;
     }
   }
