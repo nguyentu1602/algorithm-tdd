@@ -448,6 +448,13 @@ class list {
   }
 
   void
+  splice(const_iterator pos, list& other, const_iterator it) {
+    auto temp_it = it;
+    ++temp_it;
+    splice(pos, other, it, temp_it);
+  }
+
+  void
   splice(const_iterator pos, list& other) {
     splice(pos, other, other.begin(), other.end());
   }
