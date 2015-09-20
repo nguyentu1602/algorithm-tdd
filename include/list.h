@@ -256,7 +256,8 @@ class list {
   typedef E                         value_type;
   typedef E&                        reference;
   typedef size_t                    size_type;
-  typedef ptrdiff_t                difference_type;
+  typedef ptrdiff_t                 difference_type;
+  typedef std::bidirectional_iterator_tag iterator_category;
   // the big five:
   // 0. default ctor
   list() {
@@ -415,7 +416,6 @@ class list {
     }
   }
 
-
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
   // we can make to sentinel nodes for head_ and tail_ to simplify implementation
@@ -423,7 +423,15 @@ class list {
   _Node* head_;
   _Node* tail_;
 
-  //_S_distance(const )
+  static size_t
+  _S_distance(const listNode* first, const listNode* last) {
+    size_t _n = 0;
+    while(first != last) {
+      first = first->next_;
+      ++_n;
+    }
+    return _n;
+  }
   // make the two sentinels nodes with init()
   void init() {
     size_ = 0;
