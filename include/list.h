@@ -141,9 +141,6 @@ class list_iterator {
 
   // data member:
   _Node* current_;
-  // protected constructor for the iterator
-  // it actually calls the const_iterator constructor - DRY here.
-  // list_iterator(listNode<E>* p) : list_const_iterator<E> {p} {}
 };
 
 
@@ -152,7 +149,6 @@ class list_const_iterator {
   friend class list<E>;
   // this is a hack to allow listIteratorTest to access the parametrized ctor:
   friend class listIteratorTest;
-  friend class list_iterator<E>;
 
   // this class stores a pointers to a listNode object
   // and provide basic iterator operations: =, ==, ++, and !=
@@ -255,10 +251,11 @@ class list {
   typedef listNode<E> _Node;
  public:
   // the iterator type - make them testable!
-  typedef list_const_iterator<E>   const_iterator;
-  typedef list_iterator<E>         iterator;
-  typedef E                        value_type;
-  typedef size_t                   size_type;
+  typedef list_const_iterator<E>    const_iterator;
+  typedef list_iterator<E>          iterator;
+  typedef E                         value_type;
+  typedef E&                        reference;
+  typedef size_t                    size_type;
   typedef ptrdiff_t                difference_type;
   // the big five:
   // 0. default ctor
@@ -360,33 +357,39 @@ class list {
   }
 
   // accessors
-  E& front() {
+  reference
+  front() {
     return *begin();
   }
 
-  const E& front() const {
+  const reference
+  front() const {
     return *begin();
   }
 
-  E& back() {
+  reference
+  back() {
     return *(--end());
   }
-  const E& back() const {
+  const reference
+  back() const {
     return *(--end());
   }
 
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
   // insert by lvalue calls insert by rvalue to conform to DRY
-  iterator insert(iterator iter, const E& element) {
-    E copied(element);
+  iterator
+  insert(iterator iter, const E& element) {
+    value_type copied(element);
     return insert(iter, std::move(copied));
   }
 
   // insert rvalue using move semantic
-  iterator insert(iterator iter, E&& element) {
-    listNode<E>* ptr = iter.current_;
-    ptr->prev_->next_ = new listNode<E> (std::move(element), ptr->prev_, ptr);
+  iterator
+  insert(iterator iter, E&& element) {
+    _Node* ptr = iter.current_;
+    ptr->prev_->next_ = new _Node (std::move(element), ptr->prev_, ptr);
     ptr->prev_ = ptr->prev_->next_;
     size_++;
     return iterator(ptr->prev_);
@@ -394,8 +397,9 @@ class list {
 
   // erase the node that the iterator is pointing to
   // return an iterator pointing to one node after the deleted
-  iterator erase(iterator iter) {
-    listNode<E>* to_del = iter.current_;
+  iterator
+  erase(iterator iter) {
+    _Node* to_del = iter.current_;
     iterator to_return (to_del->next_);
     to_del->prev_->next_ = to_del->next_;
     to_del->next_->prev_ = to_del->prev_;
@@ -404,7 +408,8 @@ class list {
     return to_return;
   }
 
-  void clear() {
+  void
+  clear() {
     while(!empty()) {
       erase(begin());
     }
@@ -415,14 +420,15 @@ class list {
   // each list will have a size_ counter and two pointers to the beginning and end
   // we can make to sentinel nodes for head_ and tail_ to simplify implementation
   size_t size_;
-  listNode<E>* head_;
-  listNode<E>* tail_;
+  _Node* head_;
+  _Node* tail_;
 
+  //_S_distance(const )
   // make the two sentinels nodes with init()
   void init() {
     size_ = 0;
-    head_ = new listNode<E>();
-    tail_ = new listNode<E>();
+    head_ = new _Node();
+    tail_ = new _Node();
     head_->next_ = tail_;
     tail_->prev_ = head_;
   }
