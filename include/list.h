@@ -416,6 +416,44 @@ class list {
     }
   }
 
+  // advance operation:
+  /**
+   *  splice transfers the elements in the range [first, last) from other into
+   *  *this.
+   *  The elements are inserted before the element pointed to by pos.
+   */
+  void
+  splice(const_iterator pos, list& other,
+         const_iterator first, const_iterator last) {
+    // do we need to test for special case here?
+    if (first != last) {
+      // get the number of item in [first, last)
+      size_t difference = _S_distance (first.current_, last.current_);
+      const_iterator last_prev = last;
+      --last_prev;
+      const_iterator pos_prev = pos;
+      --pos_prev;
+
+      // 1st step: shorten other
+      first.current_->prev_->next_ = last.current_;
+      last.current_->prev_ = first.current_->prev_;
+      other.size_ -= difference;
+
+      // 2nd step: lengthen *this
+      first.current_->prev_ = pos_prev.current_;
+      last_prev.current_->next_ = pos.current_;
+      pos_prev.current_->next_ = first.current_;
+      pos.current_->prev_ = pos_prev.current_;
+      size_ += difference;
+    }
+  }
+
+  // void
+  // splice(const_iterator pos, list&& other,
+  //        const_iterator first, const_iterator last) {
+  // }
+
+
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
   // we can make to sentinel nodes for head_ and tail_ to simplify implementation
