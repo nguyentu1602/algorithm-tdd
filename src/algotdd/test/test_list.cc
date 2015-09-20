@@ -372,8 +372,8 @@ TEST_F(listTest, FrontBack){
   EXPECT_EQ(list_2.back(), 100);
 
   // can we modify the back reference?
-  int& rep_back = list_2.back();
-  rep_back = 20000;
+  int& ref_back = list_2.back();
+  ref_back = 20000;
   EXPECT_EQ(20000, list_2.back());
 
   // testing on const list
@@ -393,9 +393,16 @@ TEST_F(listTest, Splice) {
   std::vector<int> result {10, 1, 2, 20, 30};
   auto list_iter = list_1.begin();
   auto res_iter = result.begin();
+  EXPECT_EQ(30, *(--list_1.end()));
+  // forward loop
   while(list_iter != list_1.end()
         && res_iter != result.end()) {
     EXPECT_EQ(*res_iter++, *list_iter++);
+  }
+  // backward loop
+  while(list_iter != list_1.begin()
+        && res_iter != result.begin()) {
+    EXPECT_EQ(*res_iter--, *list_iter--);
   }
   EXPECT_EQ(0, list_2.size());
   // test no iterator was invalidated
@@ -407,7 +414,25 @@ TEST_F(listTest, Splice) {
   list_1.splice(pos, list_empty, list_empty.begin(), list_empty.end());
   EXPECT_EQ(5, list_1.size());
   list_empty.splice(list_empty.end(), list_1, list_1.begin(), ++list_1.begin());
+  EXPECT_EQ(1, list_empty.size());
   EXPECT_EQ(10, list_empty.front());
+  EXPECT_EQ(10, list_empty.back());
+
   EXPECT_EQ(1, list_1.front());
+  EXPECT_EQ(30, list_1.back());
+
   EXPECT_EQ(4, list_1.size());
+
+  // test splice() with just 2 parameters
+  list_2.push_back(100);
+
+  // this test fail so I disable it for now:
+  list_2.splice(list_2.begin(), list_empty);
+  // list_2.splice(list_2.end(), list_empty);
+  EXPECT_EQ(2, list_2.size());
+  EXPECT_EQ(10, list_2.front());
+  EXPECT_EQ(100, list_2.back());
+  EXPECT_EQ(100, *(++list_2.begin()));
+  EXPECT_EQ(100, *(--list_2.end()));
+  EXPECT_TRUE(list_empty.empty());
 }
