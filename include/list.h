@@ -464,6 +464,21 @@ class list {
   //        const_iterator first, const_iterator last) {
   // }
 
+  // TODO: implement merge() - needed for sort() implementation
+  // because we use merge sort in sort()
+  // merge two ascending sorted list into one. No elements are
+  // copied, so other become empty after merge. The simple version
+  // of merge use operator< suited with element to compare the elements
+  // we can also implement another merge() with customized Compare
+  // operator passed as the second argument
+  void merge(list& other) {
+    // NOT YET IMPLEMENTED
+  }
+
+  void merge(list&& other) {
+    // NOT YET IMPLEMENTED
+  }
+
   // TODO: implement sort() using splice(). Look into list.tcc in STL
   // for more hints
 
