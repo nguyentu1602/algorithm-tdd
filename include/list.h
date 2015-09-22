@@ -460,7 +460,28 @@ class list {
   // we can also implement another merge() with customized Compare
   // operator passed as the second argument
   void merge(list& other) {
-    // NOT YET IMPLEMENTED
+    iterator first1 = begin();
+    iterator last1 = end();
+    iterator first2 = other.begin();
+    iterator last2 = other.end();
+    while (first1 != last1 && first2 != last2) {
+      if (*first2 < *first1) {
+        iterator next = first2;
+        _M_transfer(first1, first2, ++next);
+        first2 = next;
+      }
+      else //do nothing, next candidate from 1
+        ++first1;
+    }
+    // now, either of the list is done. If that's
+    // list2, do nothing; else then move the rest
+    // of list 2 over to the end of list1
+    if(first2 != last2) {
+      _M_transfer(last1, first2, last2);
+    }
+    // update sizes
+    size_ += other.size();
+    other.size_ = 0;
   }
 
   void merge(list&& other) {
