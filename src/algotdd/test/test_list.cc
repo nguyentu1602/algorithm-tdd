@@ -482,4 +482,25 @@ TEST_F(listTest, Merge) {
   EXPECT_TRUE(compare_list(list_1, result));
   EXPECT_TRUE(is_sorted(list_1));
   EXPECT_TRUE(list_2.empty());
+  // test to merge on the same list
+  list_1.merge(list_1);
+  EXPECT_TRUE(compare_list(list_1, result));
+  // test to merge non empty list with empty list:
+  list_1.merge(list_empty);
+  EXPECT_TRUE(compare_list(list_1, result));
+  EXPECT_TRUE(list_empty.empty());
+  // test to merge empty list with non empty list
+  list_empty.merge(list_1);
+  EXPECT_TRUE(compare_list(list_empty, result));
+  EXPECT_TRUE(list_1.empty());
+  // test to merge when the greatest elements are in other
+  list_1.merge(list_empty);
+  list_2.push_back(1);
+  list_2.push_back(100);
+  list_2.push_back(200);
+  size_t total_size = list_1.size() + list_2.size();
+  list_1.merge(list_2);
+  EXPECT_EQ(total_size, list_1.size());
+  EXPECT_EQ(200, list_1.back());
+  EXPECT_EQ(100, *--(--list_1.end()));
 }
