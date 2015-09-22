@@ -15,7 +15,34 @@ class listTest : public testing::Test {
     str = "a string";
   }
   virtual void TearDown() {}
-  // class constant
+  // utility function
+  bool is_sorted( list<int>& lst) {
+    if (lst.size() <= 1) {
+      return true;
+    }
+    auto it = ++lst.begin();
+    auto prev_it = lst.begin();
+    for (; it != lst.end(); ++it, ++prev_it ) {
+      if (*it < *prev_it) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool compare_list(list<int>& lst, std::vector<int> other) {
+    if (lst.size() != other.size())
+      return false;
+    auto this_it = lst.begin();
+    auto other_it = other.begin();
+
+    while(this_it != lst.begin()) {
+      if(*this_it++ != *other_it++) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   // setup fixtures
   ::list<int> list_1;
@@ -440,4 +467,19 @@ TEST_F(listTest, Splice) {
   EXPECT_EQ(10, list_empty.back());
   EXPECT_EQ(1, list_empty.size());
   EXPECT_EQ(100, list_2.front());
+}
+
+TEST_F(listTest, Merge) {
+  list_2.push_back(5);
+  list_2.push_back(10);
+  list_2.push_back(15);
+  list_2.push_back(25);
+  EXPECT_TRUE(is_sorted(list_2));
+  EXPECT_TRUE(is_sorted(list_1));
+  list_1.merge(list_2);
+  std::vector<int> result {5, 10, 10, 15, 20, 25, 30};
+  EXPECT_EQ(list_1.size(), result.size());
+  EXPECT_TRUE(compare_list(list_1, result));
+  EXPECT_TRUE(is_sorted(list_1));
+  EXPECT_TRUE(list_2.empty());
 }
