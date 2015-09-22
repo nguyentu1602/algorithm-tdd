@@ -499,6 +499,32 @@ class list {
     }
     return _n;
   }
+
+  // helper function for splice and merge
+  // move elements from [first, last) before pos
+  // BE CAREFUL to always update the size of two lists
+  // after calling _M_transfer()
+  void
+  _M_transfer(const_iterator pos, const_iterator first, const_iterator last) {
+    if (first != last) {
+      const_iterator last_prev = last;
+      --last_prev;
+      const_iterator pos_prev = pos;
+      --pos_prev;
+
+      // 1st step: shorten the list that first and last
+      // are pointing to
+      first.current_->prev_->next_ = last.current_;
+      last.current_->prev_ = first.current_->prev_;
+
+      // 2nd step: inserting before pos
+      first.current_->prev_ = pos_prev.current_;
+      last_prev.current_->next_ = pos.current_;
+      pos_prev.current_->next_ = first.current_;
+      pos.current_->prev_ = last_prev.current_;
+    }
+  }
+
   // make the two sentinels nodes with init()
   void init() {
     size_ = 0;
