@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <random> // random_device etc.
 using std::cout;
 using std::endl;
 
@@ -42,6 +43,30 @@ class listTest : public testing::Test {
       }
     }
     return true;
+  }
+  // make a function that generate random list
+  list<int> random_list_generator(int size=100) {
+    // create a random device
+    std::random_device rd;
+    // use 32-bit Mersenne Twister by Matsumoto and Nishimura, 1998
+    std::mt19937 gen(rd());
+    // generate random distribution between 0 and 10000
+    std::uniform_int_distribution<> dis(0, 10000);
+    list<int> result;
+    for (int n = 0; n < size; ++n){
+      result.push_back(dis(gen));
+    }
+    return result;
+  }
+
+  // make a function that print list
+  void dump_list(list<int> & to_dump) {
+    auto it = to_dump.begin();
+    cout << "{";
+    while (it != to_dump.end()) {
+      cout << *it++ << ", ";
+    }
+    cout << "}" << endl;
   }
 
   // setup fixtures
@@ -503,4 +528,18 @@ TEST_F(listTest, Merge) {
   EXPECT_EQ(total_size, list_1.size());
   EXPECT_EQ(200, list_1.back());
   EXPECT_EQ(100, *--(--list_1.end()));
+}
+
+TEST_F(listTest, Sort) {
+  list<int> rand_list;
+  // test 5000 times with increasing size
+  for (int size = 0; size < 5000; size += 37) {
+    rand_list = random_list_generator(size);
+    rand_list.sort();
+    EXPECT_TRUE(is_sorted(rand_list));
+  }
+  // test with large list:
+  rand_list = random_list_generator(1<<16);
+  rand_list.sort();
+  EXPECT_TRUE(is_sorted(rand_list));
 }
