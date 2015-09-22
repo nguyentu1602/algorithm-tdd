@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <utility>
 #include <iostream>
+using std::cout;
+using std::endl;
 /* The list data structure. support constant time insertion and removal
    of element anywhere in the containter. Fast random access is not a
    feature. Follow STL's implementation as double-linked list, thus allow
@@ -290,21 +292,22 @@ class list {
   // This is actually amazing! serve as both assignment operator and move
   // assignment operator! clearly a superior way of doing things!
   list& operator=(list rhs) {
-    swap(*this, rhs); // called the overloaded swap function
+    swap(rhs); // called the class's swap method
     return *this;
   }
 
   // 3.5 swap() function as helper for assignment operator
-  friend void swap(list& first, list& second) { //no throw
+  friend void swap_helper(list& first, list& second) { //no throw
     using std::swap;
     swap(first.size_, second.size_);
     swap(first.head_, second.head_);
     swap(first.tail_, second.tail_);
   }
+
   // 4. move ctor
   list(list&& rhs) {
     init();
-    swap(*this, rhs);
+    swap(rhs);
   }
   // 5. move assignment operator: NO NEED, embedded in assignment operator
 
@@ -377,6 +380,16 @@ class list {
     return *(--end());
   }
 
+  void swap(list & other) {
+    using std::swap;
+    swap(size_, other.size_);
+    swap(head_, other.head_);
+    swap(tail_, other.tail_);
+  }
+
+  void swap(list && other) {
+    swap(std::move(other));
+  }
   // insert take an iterator pointing to a node and insert another node
   // right BEFORE iter, then return a new iterator pointing to that node
   // insert by lvalue calls insert by rvalue to conform to DRY
@@ -485,13 +498,43 @@ class list {
       other.size_ = 0;
     }
   }
+
   void merge(list&& other) {
     // NOT YET IMPLEMENTED
   }
 
-  // TODO: implement sort() using splice(). Look into list.tcc in STL
-  // for more hints
-
+  // implement sort() using splice() and merge().
+  // this is essentially an in-place merge-sort algo - AWESOME!
+  // that could theoretically short list of 2^64 elements max
+  // notice right away that all function calls in this algo
+  // is in-place because splice() and merge() only move pointers
+  // around.
+  // Borrow code from list.tcc in STL
+  void sort() {
+    // do nothing if the list has length 0 or 1
+   if (size() > 1) {
+      list _carry;
+      list _tmp[64]; // hard-coded
+      list * _fill = _tmp;
+      list * _counter;
+      do {
+        _carry.splice(_carry.begin(), *this, begin());
+        for(_counter = _tmp;
+            _counter != _fill && !_counter->empty();
+            ++_counter) {
+          _counter->merge(_carry);
+          _carry.swap(*_counter);
+        }
+        _carry.swap(*_counter);
+        if(_counter == _fill)
+          ++_fill;
+      } while (!empty());
+      // aggregate the result
+      for (_counter = _tmp + 1; _counter != _fill; ++_counter)
+        _counter->merge(*(_counter - 1));
+      swap( *(_fill - 1));
+    }
+  }
 
  private:
   // each list will have a size_ counter and two pointers to the beginning and end
