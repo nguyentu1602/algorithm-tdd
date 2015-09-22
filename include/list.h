@@ -426,24 +426,12 @@ class list {
   splice(const_iterator pos, list& other,
          const_iterator first, const_iterator last) {
     if (first != last) {
-      // get the number of item in [first, last)
+      // get the number of item in [first, last) and update sizes
       size_t difference = _S_distance (first.current_, last.current_);
-      const_iterator last_prev = last;
-      --last_prev;
-      const_iterator pos_prev = pos;
-      --pos_prev;
-
-      // 1st step: shorten other
-      first.current_->prev_->next_ = last.current_;
-      last.current_->prev_ = first.current_->prev_;
       other.size_ -= difference;
-
-      // 2nd step: lengthen *this
-      first.current_->prev_ = pos_prev.current_;
-      last_prev.current_->next_ = pos.current_;
-      pos_prev.current_->next_ = first.current_;
-      pos.current_->prev_ = last_prev.current_;
       size_ += difference;
+      // then transfer [first, last) prior to pos
+      _M_transfer(pos, first, last);
     }
   }
 
