@@ -5,7 +5,7 @@ Of course, I only finished a handful of these DSs from scratch, but they taught 
 
 Definitely a very good book and a good memory to keep.
 
-PS: I can't claim all the codes here are mine, just most of the tweaks & for educational purpose only. 
+PS: I can't claim all the codes here are mine, just most of the tweaks & for educational purpose only. All the files with *_sol.H or .C are the actual solutions by the book.
 Cheers.
 
 # To run
