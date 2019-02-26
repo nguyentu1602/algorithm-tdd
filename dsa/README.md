@@ -8,6 +8,11 @@ Definitely a very good book and a good memory to keep.
 PS: I can't claim all the codes here are mine, just most of the tweaks & for educational purpose only. 
 Cheers.
 
+# To run
+make all
+make test
+make runtest
+
 # Sources:
 http://users.cis.fiu.edu/~weiss/dsaa_c++4/code/
 
