@@ -18,6 +18,4 @@ I consulted several books and resources during this project:
 The algorithms and data structures here are all well-known and thus this repo is solely for my learning purpose. Because I used the C++ Standard Template Library regularly at work, I naturally incline to use its containters' interface when implementing my containers. All credits on explaining how the algorithms and data structures work and best practices in implementing them belong to the authors above and all coding errors are mine. Occationaly, I will use examples of complex algorithms implemented by others and only try to write testsuites for them. Under such cases I will adequately cite the source(s) and credit the original author(s).
 
 
-
-
-[![Build Status](https://travis-ci.com/nguyentu1602/algorithm-tdd.svg?branch=master)](https://travis-ci.com/nguyentu1602/algorithm-tdd)
+[![Build Status](https://travis-ci.org/nguyentu1602/algorithm-tdd.svg?branch=master)](https://travis-ci.org/nguyentu1602/algorithm-tdd)
